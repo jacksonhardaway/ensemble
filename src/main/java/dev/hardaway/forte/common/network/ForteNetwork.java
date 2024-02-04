@@ -47,6 +47,8 @@ public class ForteNetwork {
     public static synchronized void register() {
         NOTES.<NetworkEvent.ClientCustomPayloadEvent>addListener(networkEvent -> {
             NetworkEvent.Context ctx = networkEvent.getSource().get();
+            ctx.setPacketHandled(true);
+
             ServerPlayer sender = ctx.getSender();
             if (sender == null) {
                 return;

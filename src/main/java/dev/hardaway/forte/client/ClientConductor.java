@@ -46,6 +46,9 @@ public final class ClientConductor {
         this.midiInterpreter = new MidiInterpreter();
         this.synthesizerManager = new InstrumentSynthesizerManager();
         ForteNetwork.NOTES.<NetworkEvent.ServerCustomPayloadEvent>addListener(networkEvent -> networkEvent.getSource().get().enqueueWork(() -> {
+            NetworkEvent.Context ctx = networkEvent.getSource().get();
+            ctx.setPacketHandled(true);
+
             ClientPacketListener connection = Minecraft.getInstance().getConnection();
             if (connection == null) {
                 return;
@@ -54,7 +57,6 @@ public final class ClientConductor {
             FriendlyByteBuf buf = networkEvent.getPayload();
             int entityId = buf.readVarInt();
 
-            NetworkEvent.Context ctx = networkEvent.getSource().get();
             ClientLevel level = Minecraft.getInstance().level;
             if (level == null) {
                 return;
