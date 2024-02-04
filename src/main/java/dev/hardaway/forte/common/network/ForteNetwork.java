@@ -2,12 +2,18 @@ package dev.hardaway.forte.common.network;
 
 import dev.hardaway.forte.Forte;
 import dev.hardaway.forte.client.midi.MidiEvent;
+import dev.hardaway.forte.common.instrument.InstrumentDefinition;
 import dev.hardaway.forte.common.instrument.InstrumentNote;
 import dev.hardaway.forte.common.network.protocol.FortePacket;
+import dev.hardaway.forte.common.registry.ForteInstruments;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.EncoderException;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.PacketSendListener;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundCustomPayloadPacket;
+import net.minecraft.network.protocol.game.ClientboundDisconnectPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -47,6 +53,15 @@ public class ForteNetwork {
             }
 
             FriendlyByteBuf buf = networkEvent.getPayload();
+            int instrument = buf.readVarInt();
+
+            Registry<InstrumentDefinition> registry = sender.level().registryAccess().registryOrThrow(ForteInstruments.INSTRUMENT_DEFINITION_REGISTRY);
+            if (registry.byId(instrument) == null) {
+                Component reason = Component.literal("Invalid Instrument"); // TODO translate
+                sender.connection.send(new ClientboundDisconnectPacket(reason), PacketSendListener.thenRun(() -> sender.connection.disconnect(reason)));
+                return;
+            }
+
             MidiEvent.Status status = buf.readEnum(MidiEvent.Status.class);
             InstrumentNote note = buf.readEnum(InstrumentNote.class);
             int octave = buf.readVarInt();
@@ -54,8 +69,9 @@ public class ForteNetwork {
             int entityId = sender.getId();
 
             FriendlyByteBuf sendBuf = new FriendlyByteBuf(Unpooled.buffer());
-            sendBuf.writeVarInt(entityId);
             sendBuf.writeEnum(status);
+            sendBuf.writeVarInt(entityId);
+            sendBuf.writeVarInt(instrument);
             sendBuf.writeEnum(note);
             sendBuf.writeVarInt(octave);
             if (status == MidiEvent.Status.ON) {

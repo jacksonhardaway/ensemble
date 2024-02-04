@@ -65,8 +65,9 @@ public final class ClientConductor {
                 return;
             }
 
+            int instrumentId = buf.readVarInt();
             Registry<InstrumentDefinition> registry = connection.registryAccess().registryOrThrow(ForteInstruments.INSTRUMENT_DEFINITION_REGISTRY);
-            InstrumentDefinition instrument = registry.get(new ResourceLocation(Forte.MOD_ID, "piano")); // TODO: unhardcode piano
+            InstrumentDefinition instrument = registry.byId(instrumentId);
             if (instrument == null) {
                 return;
             }
@@ -142,13 +143,12 @@ public final class ClientConductor {
             return;
         }
 
-
         if (glfwGetWindowAttrib(Minecraft.getInstance().getWindow().getWindow(), GLFW_FOCUSED) != GLFW_TRUE) {
             return;
         }
 
-        // FIXME don't send packets all the time lol
-        sendNote(event.getStatus(), event.getNote(), event.getOctave(), event.getVelocity());
+        // TODO don't send packets all the time lol
+        sendNote(event.getStatus(), instrument, event.getNote(), event.getOctave(), event.getVelocity());
 
         if (event.getStatus() == MidiEvent.Status.OFF) {
             this.stopNote(player, instrument, event.getNote(), event.getOctave());
@@ -158,13 +158,15 @@ public final class ClientConductor {
         this.playNote(player, instrument, event.getNote(), event.getOctave(), event.getVelocity());
     }
 
-    private static void sendNote(MidiEvent.Status status, InstrumentNote note, int octave, int velocity) {
+    private static void sendNote(MidiEvent.Status status, InstrumentDefinition instrument, InstrumentNote note, int octave, int velocity) {
         ClientPacketListener clientPacketListener = Minecraft.getInstance().getConnection();
         if (clientPacketListener == null) {
             return;
         }
 
+        Registry<InstrumentDefinition> registry = clientPacketListener.registryAccess().registryOrThrow(ForteInstruments.INSTRUMENT_DEFINITION_REGISTRY);
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+        buf.writeVarInt(registry.getId(instrument));
         buf.writeEnum(status);
         buf.writeEnum(note);
         buf.writeVarInt(octave);
