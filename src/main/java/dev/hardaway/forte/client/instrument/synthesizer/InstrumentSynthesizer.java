@@ -4,8 +4,10 @@ import com.mojang.serialization.Codec;
 import dev.hardaway.forte.common.instrument.InstrumentDefinition;
 import dev.hardaway.forte.common.instrument.InstrumentNote;
 import dev.hardaway.forte.common.registry.ForteSynthesizers;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class InstrumentSynthesizer {
@@ -19,16 +21,17 @@ public abstract class InstrumentSynthesizer {
 
     /**
      * Synthesizes an instrument note and an octave to a Minecraft sound instance.
-     * @param player The player the instrument is being played by
+     *
+     * @param entity     The entity the instrument is being played by
      * @param instrument The instrument the note is being played from
-     * @param note The note being played
-     * @param octave The octave of the note
+     * @param note       The note being played
+     * @param octave     The octave of the note
      * @return The synthesized sound instance, or null if no sound could be synthesized
      */
-    @Nullable
-    public abstract SoundInstance synthesize(LocalPlayer player, InstrumentDefinition instrument, InstrumentNote note, int octave, int velocity);
+    @OnlyIn(Dist.CLIENT)
+    public abstract @Nullable SoundInstance synthesize(@Nullable Entity entity, InstrumentDefinition instrument, InstrumentNote note, int octave, int velocity);
 
     public InstrumentSynthesizerType type() {
-        return type;
+        return this.type;
     }
 }

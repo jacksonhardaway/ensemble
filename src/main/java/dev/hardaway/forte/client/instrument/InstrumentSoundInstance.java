@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class InstrumentSoundInstance extends AbstractTickableSoundInstance {
-    @Nullable
+
     private final Entity entity;
     private boolean noteOn = true;
     private long endLife = 200L;
@@ -41,12 +41,12 @@ public class InstrumentSoundInstance extends AbstractTickableSoundInstance {
         this.noteOn = false;
     }
 
+    @Override
     public boolean canPlaySound() {
-        if (this.entity != null)
-            return !this.entity.isSilent();
-        return true;
+        return this.entity == null || !this.entity.isSilent();
     }
 
+    @Override
     public void tick() {
         if (this.entity != null) {
             if (this.entity.isRemoved()) {

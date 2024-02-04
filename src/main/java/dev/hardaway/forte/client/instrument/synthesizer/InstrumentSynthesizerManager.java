@@ -1,6 +1,5 @@
 package dev.hardaway.forte.client.instrument.synthesizer;
 
-
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,7 +7,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.JsonOps;
-import dev.hardaway.forte.client.ClientConductor;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -19,7 +17,8 @@ import org.slf4j.Logger;
 
 import java.util.Map;
 
-public final class InstrumentSynthesizerManager extends SimpleJsonResourceReloadListener {
+public class InstrumentSynthesizerManager extends SimpleJsonResourceReloadListener {
+
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
@@ -48,8 +47,7 @@ public final class InstrumentSynthesizerManager extends SimpleJsonResourceReload
         LOGGER.info("Loaded {} synthesizers", this.synthesizers.size());
     }
 
-    @Nullable
-    public InstrumentSynthesizer getSynthesizer(ResourceLocation id) {
-        return synthesizers.get(id);
+    public @Nullable InstrumentSynthesizer getSynthesizer(ResourceLocation id) {
+        return this.synthesizers.get(id);
     }
 }
