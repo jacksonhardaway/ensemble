@@ -71,16 +71,16 @@ public class ForteNetwork {
             int entityId = sender.getId();
 
             FriendlyByteBuf sendBuf = new FriendlyByteBuf(Unpooled.buffer());
-            sendBuf.writeEnum(status);
             sendBuf.writeVarInt(entityId);
             sendBuf.writeVarInt(instrument);
+            sendBuf.writeEnum(status);
             sendBuf.writeEnum(note);
             sendBuf.writeVarInt(octave);
             if (status == MidiEvent.Status.ON) {
                 sendBuf.writeVarInt(velocity);
             }
-
-            PacketDistributor.TRACKING_ENTITY.with(() -> sender).send(new ClientboundCustomPayloadPacket(NOTES_CHANNEL, sendBuf));
+            
+            PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(sender, sender.getX(), sender.getY(), sender.getZ(), 24, sender.level().dimension())).send(new ClientboundCustomPayloadPacket(NOTES_CHANNEL, sendBuf));
         });
     }
 
