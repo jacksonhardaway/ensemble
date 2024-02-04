@@ -1,0 +1,117 @@
+{
+  "type": "forte:sound_event",
+  "sound_events": {
+    "a": [
+      "forte:instrument.piano.note.a.octave_0",
+      "forte:instrument.piano.note.a.octave_1",
+      "forte:instrument.piano.note.a.octave_2",
+      "forte:instrument.piano.note.a.octave_3",
+      "forte:instrument.piano.note.a.octave_4",
+      "forte:instrument.piano.note.a.octave_5",
+      "forte:instrument.piano.note.a.octave_6",
+      "forte:instrument.piano.note.a.octave_7"
+    ],
+    "a_sharp": [
+      "forte:instrument.piano.note.a_sharp.octave_0",
+      "forte:instrument.piano.note.a_sharp.octave_1",
+      "forte:instrument.piano.note.a_sharp.octave_2",
+      "forte:instrument.piano.note.a_sharp.octave_3",
+      "forte:instrument.piano.note.a_sharp.octave_4",
+      "forte:instrument.piano.note.a_sharp.octave_5",
+      "forte:instrument.piano.note.a_sharp.octave_6",
+      "forte:instrument.piano.note.a_sharp.octave_7"
+    ],
+    "b": [
+      "forte:instrument.piano.note.b.octave_0",
+      "forte:instrument.piano.note.b.octave_1",
+      "forte:instrument.piano.note.b.octave_2",
+      "forte:instrument.piano.note.b.octave_3",
+      "forte:instrument.piano.note.b.octave_4",
+      "forte:instrument.piano.note.b.octave_5",
+      "forte:instrument.piano.note.b.octave_6",
+      "forte:instrument.piano.note.b.octave_7"
+    ],
+    "c": [
+      "forte:instrument.piano.note.c.octave_0",
+      "forte:instrument.piano.note.c.octave_1",
+      "forte:instrument.piano.note.c.octave_2",
+      "forte:instrument.piano.note.c.octave_3",
+      "forte:instrument.piano.note.c.octave_4",
+      "forte:instrument.piano.note.c.octave_5",
+      "forte:instrument.piano.note.c.octave_6",
+      "forte:instrument.piano.note.c.octave_7"
+    ],
+    "c_sharp": [
+      "forte:instrument.piano.note.c_sharp.octave_0",
+      "forte:instrument.piano.note.c_sharp.octave_1",
+      "forte:instrument.piano.note.c_sharp.octave_2",
+      "forte:instrument.piano.note.c_sharp.octave_3",
+      "forte:instrument.piano.note.c_sharp.octave_4",
+      "forte:instrument.piano.note.c_sharp.octave_5",
+      "forte:instrument.piano.note.c_sharp.octave_6"
+    ],
+    "d": [
+      "forte:instrument.piano.note.d.octave_0",
+      "forte:instrument.piano.note.d.octave_1",
+      "forte:instrument.piano.note.d.octave_2",
+      "forte:instrument.piano.note.d.octave_3",
+      "forte:instrument.piano.note.d.octave_4",
+      "forte:instrument.piano.note.d.octave_5",
+      "forte:instrument.piano.note.d.octave_6"
+    ],
+    "d_sharp": [
+      "forte:instrument.piano.note.d_sharp.octave_0",
+      "forte:instrument.piano.note.d_sharp.octave_1",
+      "forte:instrument.piano.note.d_sharp.octave_2",
+      "forte:instrument.piano.note.d_sharp.octave_3",
+      "forte:instrument.piano.note.d_sharp.octave_4",
+      "forte:instrument.piano.note.d_sharp.octave_5",
+      "forte:instrument.piano.note.d_sharp.octave_6"
+    ],
+    "e": [
+      "forte:instrument.piano.note.e.octave_0",
+      "forte:instrument.piano.note.e.octave_1",
+      "forte:instrument.piano.note.e.octave_2",
+      "forte:instrument.piano.note.e.octave_3",
+      "forte:instrument.piano.note.e.octave_4",
+      "forte:instrument.piano.note.e.octave_5",
+      "forte:instrument.piano.note.e.octave_6"
+    ],
+    "f": [
+      "forte:instrument.piano.note.f.octave_0",
+      "forte:instrument.piano.note.f.octave_1",
+      "forte:instrument.piano.note.f.octave_2",
+      "forte:instrument.piano.note.f.octave_3",
+      "forte:instrument.piano.note.f.octave_4",
+      "forte:instrument.piano.note.f.octave_5",
+      "forte:instrument.piano.note.f.octave_6"
+    ],
+    "f_sharp": [
+      "forte:instrument.piano.note.f_sharp.octave_0",
+      "forte:instrument.piano.note.f_sharp.octave_1",
+      "forte:instrument.piano.note.f_sharp.octave_2",
+      "forte:instrument.piano.note.f_sharp.octave_3",
+      "forte:instrument.piano.note.f_sharp.octave_4",
+      "forte:instrument.piano.note.f_sharp.octave_5",
+      "forte:instrument.piano.note.f_sharp.octave_6"
+    ],
+    "g": [
+      "forte:instrument.piano.note.g.octave_0",
+      "forte:instrument.piano.note.g.octave_1",
+      "forte:instrument.piano.note.g.octave_2",
+      "forte:instrument.piano.note.g.octave_3",
+      "forte:instrument.piano.note.g.octave_4",
+      "forte:instrument.piano.note.g.octave_5",
+      "forte:instrument.piano.note.g.octave_6"
+    ],
+    "g_sharp": [
+      "forte:instrument.piano.note.g_sharp.octave_0",
+      "forte:instrument.piano.note.g_sharp.octave_1",
+      "forte:instrument.piano.note.g_sharp.octave_2",
+      "forte:instrument.piano.note.g_sharp.octave_3",
+      "forte:instrument.piano.note.g_sharp.octave_4",
+      "forte:instrument.piano.note.g_sharp.octave_5",
+      "forte:instrument.piano.note.g_sharp.octave_6"
+    ]
+  }
+}

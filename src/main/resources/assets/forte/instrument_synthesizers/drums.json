@@ -1,0 +1,41 @@
+{
+  "type": "forte:sound_event",
+  "sound_events": {
+    "a": [
+      "forte:instrument.drums.percussion.floor_tom.octave_0"
+    ],
+    "a_sharp": [
+      "forte:instrument.drums.percussion.closed_hihat_right.octave_0"
+    ],
+    "b": [
+      "forte:instrument.drums.percussion.b.octave_0"
+    ],
+    "c": [
+      "forte:instrument.drums.percussion.c.octave_0"
+    ],
+    "c_sharp": [
+      "forte:instrument.drums.percussion.c_sharp.octave_0"
+    ],
+    "d": [
+      "forte:instrument.drums.percussion.d.octave_0"
+    ],
+    "d_sharp": [
+      "forte:instrument.drums.percussion.d_sharp.octave_0"
+    ],
+    "e": [
+      "forte:instrument.drums.percussion.e.octave_0"
+    ],
+    "f": [
+      "forte:instrument.drums.percussion.f.octave_0"
+    ],
+    "f_sharp": [
+      "forte:instrument.drums.percussion.f_sharp.octave_0"
+    ],
+    "g": [
+      "forte:instrument.drums.percussion.g.octave_0"
+    ],
+    "g_sharp": [
+      "forte:instrument.drums.percussion.g_sharp.octave_0"
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "synthesizer": "forte:piano",
+  "can_sustain": true,
+  "note_dictionary": [
+    {
+      "note": "a",
+      "octaves": {
+        "min": 0,
+        "max": 7
+      }
+    },
+    {
+      "note": "a_sharp",
+      "octaves": {
+        "min": 0,
+        "max": 7
+      }
+    },
+    {
+      "note": "b",
+      "octaves": {
+        "min": 0,
+        "max": 7
+      }
+    },
+    {
+      "note": "c",
+      "octaves": {
+        "min": 1,
+        "max": 8
+      }
+    },
+    {
+      "note": "c_sharp",
+      "octaves": {
+        "min": 1,
+        "max": 7
+      }
+    },
+    {
+      "note": "d",
+      "octaves": {
+        "min": 1,
+        "max": 7
+      }
+    },
+    {
+      "note": "d_sharp",
+      "octaves": {
+        "min": 1,
+        "max": 7
+      }
+    },
+    {
+      "note": "e",
+      "octaves": {
+        "min": 1,
+        "max": 7
+      }
+    },
+    {
+      "note": "f",
+      "octaves": {
+        "min": 1,
+        "max": 7
+      }
+    },
+    {
+      "note": "f_sharp",
+      "octaves": {
+        "min": 1,
+        "max": 7
+      }
+    },
+    {
+      "note": "g",
+      "octaves": {
+        "min": 1,
+        "max": 7
+      }
+    },
+    {
+      "note": "g_sharp",
+      "octaves": {
+        "min": 1,
+        "max": 7
+      }
+    }
+  ]
+}
