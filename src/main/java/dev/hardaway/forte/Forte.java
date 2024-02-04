@@ -1,14 +1,11 @@
 package dev.hardaway.forte;
 
 import dev.hardaway.forte.client.ClientConductor;
-import dev.hardaway.forte.client.instrument.synthesizer.InstrumentSynthesizerManager;
-import dev.hardaway.forte.client.midi.MidiInterpreter;
-import dev.hardaway.forte.common.instrument.InstrumentManager;
 import dev.hardaway.forte.common.network.ForteNetwork;
+import dev.hardaway.forte.common.registry.ForteInstruments;
 import dev.hardaway.forte.common.registry.ForteItems;
 import dev.hardaway.forte.common.registry.ForteSynthesizers;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -29,6 +26,7 @@ public class Forte {
 
         ForteItems.REGISTRY.register(bus);
         ForteSynthesizers.REGISTRY.register(bus);
+        ForteInstruments.register(bus);
 
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientConductor.INSTANCE.register(bus));
 
@@ -38,11 +36,4 @@ public class Forte {
     private void commonSetup(FMLCommonSetupEvent event) {
         ForteNetwork.register();
     }
-
-    // TODO: move to server conductor
-    @SubscribeEvent
-    public void addReloadListeners(AddReloadListenerEvent event) {
-        event.addListener(InstrumentManager.INSTANCE);
-    }
-
 }

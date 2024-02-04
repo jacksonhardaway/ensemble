@@ -8,15 +8,17 @@ import dev.hardaway.forte.client.instrument.synthesizer.InstrumentSynthesizerMan
 import dev.hardaway.forte.client.midi.MidiEvent;
 import dev.hardaway.forte.client.midi.MidiInterpreter;
 import dev.hardaway.forte.common.instrument.InstrumentDefinition;
-import dev.hardaway.forte.common.instrument.InstrumentManager;
 import dev.hardaway.forte.common.instrument.InstrumentNote;
 import dev.hardaway.forte.common.network.ForteNetwork;
+import dev.hardaway.forte.common.registry.ForteInstruments;
 import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.core.Registry;
+import net.minecraft.network.Connection;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ServerboundCustomPayloadPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -44,6 +46,11 @@ public final class ClientConductor {
         this.midiInterpreter = new MidiInterpreter();
         this.synthesizerManager = new InstrumentSynthesizerManager();
         ForteNetwork.NOTES.<NetworkEvent.ServerCustomPayloadEvent>addListener(networkEvent -> networkEvent.getSource().get().enqueueWork(() -> {
+            ClientPacketListener connection = Minecraft.getInstance().getConnection();
+            if (connection == null) {
+                return;
+            }
+
             FriendlyByteBuf buf = networkEvent.getPayload();
             int entityId = buf.readVarInt();
 
@@ -58,7 +65,8 @@ public final class ClientConductor {
                 return;
             }
 
-            InstrumentDefinition instrument = InstrumentManager.INSTANCE.getInstrument(new ResourceLocation(Forte.MOD_ID, "piano"));
+            Registry<InstrumentDefinition> registry = connection.registryAccess().registryOrThrow(ForteInstruments.INSTRUMENT_DEFINITION_REGISTRY);
+            InstrumentDefinition instrument = registry.get(new ResourceLocation(Forte.MOD_ID, "piano")); // TODO: unhardcode piano
             if (instrument == null) {
                 return;
             }
@@ -128,10 +136,12 @@ public final class ClientConductor {
             return;
         }
 
-        InstrumentDefinition instrument = InstrumentManager.INSTANCE.getInstrument(new ResourceLocation(Forte.MOD_ID, "piano"));
+        Registry<InstrumentDefinition> registry = player.connection.registryAccess().registryOrThrow(ForteInstruments.INSTRUMENT_DEFINITION_REGISTRY);
+        InstrumentDefinition instrument = registry.get(new ResourceLocation(Forte.MOD_ID, "piano")); // TODO: unhardcode piano
         if (instrument == null) {
             return;
         }
+
 
         if (glfwGetWindowAttrib(Minecraft.getInstance().getWindow().getWindow(), GLFW_FOCUSED) != GLFW_TRUE) {
             return;
