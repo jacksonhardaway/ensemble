@@ -3,16 +3,10 @@ package dev.hardaway.ensemble.client.midi;
 import com.mojang.logging.LogUtils;
 import dev.hardaway.ensemble.common.instrument.InstrumentNote;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.common.MinecraftForge;
+import net.neoforged.neoforge.common.NeoForge;
 import org.slf4j.Logger;
 
-import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiMessage;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Receiver;
-import javax.sound.midi.ShortMessage;
-import javax.sound.midi.Transmitter;
+import javax.sound.midi.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,23 +55,26 @@ public final class MidiInterpreter {
     public static class Handler implements Receiver {
         @Override
         public void send(MidiMessage message, long timeStamp) {
-            if (!(message instanceof ShortMessage msg))
+            if (!(message instanceof ShortMessage msg)) {
                 return;
+            }
 
             int command = msg.getCommand();
-            if (command != ShortMessage.NOTE_ON && command != ShortMessage.NOTE_OFF)
+            if (command != ShortMessage.NOTE_ON && command != ShortMessage.NOTE_OFF) {
                 return;
+            }
 
             int noteData = msg.getData1();
             InstrumentNote note = InstrumentNote.from(noteData % 12);
-            if (note == null)
+            if (note == null) {
                 return;
+            }
 
             int octave = (noteData / 12) - 1;
             int velocity = msg.getData2();
 
             LOGGER.debug("received midi event: {} oct {} vel {}", note.getSerializedName(), octave, velocity);
-            Minecraft.getInstance().execute(() -> MinecraftForge.EVENT_BUS.post(new MidiEvent(command == ShortMessage.NOTE_OFF || velocity <= 0 ? MidiEvent.Status.OFF : MidiEvent.Status.ON, note, octave, velocity)));
+            Minecraft.getInstance().execute(() -> NeoForge.EVENT_BUS.post(new MidiEvent(command == ShortMessage.NOTE_OFF || velocity <= 0 ? MidiEvent.Status.OFF : MidiEvent.Status.ON, note, octave, velocity)));
         }
 
         @Override

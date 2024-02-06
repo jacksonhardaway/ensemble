@@ -1,7 +1,7 @@
 package dev.hardaway.ensemble.client.midi;
 
 import dev.hardaway.ensemble.common.instrument.InstrumentNote;
-import net.minecraftforge.eventbus.api.Event;
+import net.neoforged.bus.api.Event;
 
 public class MidiEvent extends Event {
 
@@ -18,19 +18,19 @@ public class MidiEvent extends Event {
     }
 
     public MidiEvent.Status getStatus() {
-        return status;
+        return this.status;
     }
 
     public InstrumentNote getNote() {
-        return note;
+        return this.note;
     }
 
     public int getOctave() {
-        return octave;
+        return this.octave;
     }
 
     public int getVelocity() {
-        return velocity;
+        return this.velocity;
     }
 
     public enum Status {

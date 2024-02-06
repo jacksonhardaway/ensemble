@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class SoundEventSynthesizer extends InstrumentSynthesizer {
     private final Map<InstrumentNote, List<ResourceLocation>> soundEvents;
 
     public SoundEventSynthesizer(Map<InstrumentNote, List<ResourceLocation>> soundEvents) {
-        super(EnsembleSynthesizers.SOUND_EVENT.get());
+        super(EnsembleSynthesizers.SOUND_EVENT.value());
         this.soundEvents = soundEvents;
     }
 

@@ -6,13 +6,13 @@ import dev.hardaway.ensemble.common.instrument.InstrumentNote;
 import dev.hardaway.ensemble.common.registry.EnsembleSynthesizers;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class InstrumentSynthesizer {
 
-    public static final Codec<? extends InstrumentSynthesizer> CODEC = EnsembleSynthesizers.REGISTRY_SUPPLIER.get().getCodec().dispatch(InstrumentSynthesizer::type, InstrumentSynthesizerType::codec);
+    public static final Codec<? extends InstrumentSynthesizer> CODEC = EnsembleSynthesizers.REGISTRY_SUPPLIER.byNameCodec().dispatch(InstrumentSynthesizer::type, InstrumentSynthesizerType::codec);
     private final InstrumentSynthesizerType type;
 
     public InstrumentSynthesizer(InstrumentSynthesizerType type) {

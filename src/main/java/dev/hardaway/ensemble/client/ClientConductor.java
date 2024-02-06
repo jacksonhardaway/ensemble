@@ -9,24 +9,24 @@ import dev.hardaway.ensemble.client.midi.MidiEvent;
 import dev.hardaway.ensemble.client.midi.MidiInterpreter;
 import dev.hardaway.ensemble.common.instrument.InstrumentDefinition;
 import dev.hardaway.ensemble.common.instrument.InstrumentNote;
-import dev.hardaway.ensemble.common.network.EnsembleNetwork;
+import dev.hardaway.ensemble.common.network.protocol.ClientboundNotePacket;
+import dev.hardaway.ensemble.common.network.protocol.ServerboundNotePacket;
 import dev.hardaway.ensemble.common.registry.EnsembleInstruments;
-import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.Registry;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.game.ServerboundCustomPayloadPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.world.level.Level;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -42,51 +42,11 @@ public final class ClientConductor {
     private ClientConductor() {
         this.midiInterpreter = new MidiInterpreter();
         this.synthesizerManager = new InstrumentSynthesizerManager();
-        EnsembleNetwork.NOTES.<NetworkEvent.ServerCustomPayloadEvent>addListener(networkEvent -> {
-            NetworkEvent.Context ctx = networkEvent.getSource().get();
-            ctx.setPacketHandled(true);
-
-            ClientPacketListener connection = Minecraft.getInstance().getConnection();
-            if (connection == null) {
-                return;
-            }
-
-            FriendlyByteBuf buf = networkEvent.getPayload();
-            int entityId = buf.readVarInt();
-
-            ClientLevel level = Minecraft.getInstance().level;
-            if (level == null) {
-                return;
-            }
-
-            Entity entity = level.getEntity(entityId);
-            if (entity == null) {
-                return;
-            }
-
-            int instrumentId = buf.readVarInt();
-            Registry<InstrumentDefinition> registry = connection.registryAccess().registryOrThrow(EnsembleInstruments.INSTRUMENT_DEFINITION_REGISTRY);
-            InstrumentDefinition instrument = registry.byId(instrumentId);
-            if (instrument == null) {
-                return;
-            }
-
-            MidiEvent.Status status = buf.readEnum(MidiEvent.Status.class);
-            InstrumentNote note = buf.readEnum(InstrumentNote.class);
-            int octave = buf.readVarInt();
-            int velocity = status == MidiEvent.Status.ON ? buf.readVarInt() : 0;
-
-            if (status == MidiEvent.Status.ON) {
-                this.playNote(entity, instrument, note, octave, velocity);
-            } else {
-                this.stopNote(entity, instrument, note, octave);
-            }
-        });
     }
 
     public void register(IEventBus bus) {
         bus.addListener(this::registerReloadListeners);
-        MinecraftForge.EVENT_BUS.addListener(this::receiveMidi);
+        NeoForge.EVENT_BUS.addListener(this::receiveMidi);
     }
 
     // Enable "recording" mode which consumes the note keybinds
@@ -149,21 +109,40 @@ public final class ClientConductor {
     }
 
     private static void sendNote(MidiEvent.Status status, InstrumentDefinition instrument, InstrumentNote note, int octave, int velocity) {
-        ClientPacketListener clientPacketListener = Minecraft.getInstance().getConnection();
-        if (clientPacketListener == null) {
+        ClientPacketListener listener = Minecraft.getInstance().getConnection();
+        if (listener != null) {
+            Registry<InstrumentDefinition> registry = listener.registryAccess().registryOrThrow(EnsembleInstruments.INSTRUMENT_DEFINITION_REGISTRY);
+            PacketDistributor.SERVER.noArg().send(new ServerboundNotePacket(status, note, registry.getId(instrument), octave, velocity));
+        }
+    }
+
+    @ApiStatus.Internal
+    public void handleNote(ClientboundNotePacket packet, PlayPayloadContext context) {
+        if (context.level().isEmpty()) {
             return;
         }
 
-        Registry<InstrumentDefinition> registry = clientPacketListener.registryAccess().registryOrThrow(EnsembleInstruments.INSTRUMENT_DEFINITION_REGISTRY);
-        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-        buf.writeVarInt(registry.getId(instrument));
-        buf.writeEnum(status);
-        buf.writeEnum(note);
-        buf.writeVarInt(octave);
-        if (status == MidiEvent.Status.ON) {
-            buf.writeVarInt(velocity);
+        Level level = context.level().get();
+        Entity entity = level.getEntity(packet.entityId());
+        if (entity == null) {
+            return;
         }
-        clientPacketListener.getConnection().send(new ServerboundCustomPayloadPacket(EnsembleNetwork.NOTES_CHANNEL, buf));
+
+        Registry<InstrumentDefinition> registry = level.registryAccess().registryOrThrow(EnsembleInstruments.INSTRUMENT_DEFINITION_REGISTRY);
+        InstrumentDefinition instrument = registry.byId(packet.instrument());
+        if (instrument == null) {
+            return;
+        }
+
+        MidiEvent.Status status = packet.status();
+        InstrumentNote note = packet.note();
+        int octave = packet.octave();
+
+        if (status == MidiEvent.Status.ON) {
+            this.playNote(entity, instrument, note, octave, packet.velocity());
+        } else {
+            this.stopNote(entity, instrument, note, octave);
+        }
     }
 
     public MidiInterpreter getMidiInterpreter() {
