@@ -10,12 +10,15 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class InstrumentSynthesizer {
+import java.io.Closeable;
+import java.io.IOException;
+
+public abstract class InstrumentSynthesizer implements Closeable {
 
     public static final Codec<? extends InstrumentSynthesizer> CODEC = EnsembleSynthesizers.REGISTRY_SUPPLIER.byNameCodec().dispatch(InstrumentSynthesizer::type, InstrumentSynthesizerType::codec);
-    private final InstrumentSynthesizerType type;
+    private final InstrumentSynthesizerType<?> type;
 
-    public InstrumentSynthesizer(InstrumentSynthesizerType type) {
+    public InstrumentSynthesizer(InstrumentSynthesizerType<?> type) {
         this.type = type;
     }
 
@@ -31,7 +34,11 @@ public abstract class InstrumentSynthesizer {
     @OnlyIn(Dist.CLIENT)
     public abstract @Nullable SoundInstance synthesize(@Nullable Entity entity, InstrumentDefinition instrument, InstrumentNote note, int octave, int velocity);
 
-    public InstrumentSynthesizerType type() {
+    @Override
+    public void close() {
+    }
+
+    public InstrumentSynthesizerType<?> type() {
         return this.type;
     }
 }

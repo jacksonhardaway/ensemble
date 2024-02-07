@@ -30,6 +30,8 @@ public class InstrumentSynthesizerManager extends SimpleJsonResourceReloadListen
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> entries, ResourceManager resourceManager, ProfilerFiller profiler) {
+        this.synthesizers.forEach((location, instrumentSynthesizer) -> instrumentSynthesizer.close()); // Close all synthesizers before we reload
+
         ImmutableMap.Builder<ResourceLocation, InstrumentSynthesizer> map = ImmutableMap.builder();
 
         for (Map.Entry<ResourceLocation, JsonElement> entry : entries.entrySet()) {
@@ -37,7 +39,7 @@ public class InstrumentSynthesizerManager extends SimpleJsonResourceReloadListen
             try {
                 synthesizer = Util.getOrThrow(InstrumentSynthesizer.CODEC.parse(JsonOps.INSTANCE, entry.getValue()), JsonParseException::new);
             } catch (JsonParseException e) {
-                LOGGER.warn("Unable to load synthesizer: '" + entry.getKey() + "'", e);
+                LOGGER.warn("Failed to load synthesizer: '" + entry.getKey() + "'", e);
                 continue;
             }
             map.put(entry.getKey(), synthesizer);

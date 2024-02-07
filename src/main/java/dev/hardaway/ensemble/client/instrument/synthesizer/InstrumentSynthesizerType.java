@@ -2,11 +2,11 @@ package dev.hardaway.ensemble.client.instrument.synthesizer;
 
 import com.mojang.serialization.Codec;
 
-public interface InstrumentSynthesizerType {
+public interface InstrumentSynthesizerType<T extends InstrumentSynthesizer> {
 
-    static InstrumentSynthesizerType of(Codec<? extends InstrumentSynthesizer> codec) {
+    static <T extends InstrumentSynthesizer> InstrumentSynthesizerType<T> of(Codec<T> codec) {
         return () -> codec;
     }
 
-    Codec<? extends InstrumentSynthesizer> codec();
+    Codec<T> codec();
 }
