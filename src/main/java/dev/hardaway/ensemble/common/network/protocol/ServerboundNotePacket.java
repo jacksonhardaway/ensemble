@@ -2,10 +2,17 @@ package dev.hardaway.ensemble.common.network.protocol;
 
 import dev.hardaway.ensemble.Ensemble;
 import dev.hardaway.ensemble.client.midi.MidiEvent;
+import dev.hardaway.ensemble.common.instrument.InstrumentDefinition;
 import dev.hardaway.ensemble.common.instrument.InstrumentNote;
+import dev.hardaway.ensemble.common.registry.EnsembleInstruments;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record ServerboundNotePacket(MidiEvent.Status status,
                                     InstrumentNote note,
@@ -22,6 +29,22 @@ public record ServerboundNotePacket(MidiEvent.Status status,
         int octave = buf.readVarInt();
         int velocity = status == MidiEvent.Status.ON ? buf.readVarInt() : 0;
         return new ServerboundNotePacket(status, note, instrument, octave, velocity);
+    }
+
+    public static void handle(ServerboundNotePacket payload, PlayPayloadContext ctx) {
+        if (ctx.player().isEmpty()) {
+            return;
+        }
+
+        ServerPlayer sender = (ServerPlayer) ctx.player().get();
+        Registry<InstrumentDefinition> registry = sender.level().registryAccess().registryOrThrow(EnsembleInstruments.INSTRUMENT_DEFINITION_REGISTRY);
+        if (registry.byId(payload.instrument()) == null) {
+            ctx.packetHandler().disconnect(Component.literal("Invalid Instrument")); // TODO translate
+            return;
+        }
+
+        PacketDistributor.TargetPoint target = new PacketDistributor.TargetPoint(sender, sender.getX(), sender.getY(), sender.getZ(), 24, sender.level().dimension());
+        PacketDistributor.NEAR.with(target).send(new ClientboundNotePacket(sender.getId(), payload.status(), payload.note(), payload.instrument(), payload.octave(), payload.velocity()));
     }
 
     @Override

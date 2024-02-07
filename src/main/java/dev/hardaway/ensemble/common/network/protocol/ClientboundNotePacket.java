@@ -1,11 +1,13 @@
 package dev.hardaway.ensemble.common.network.protocol;
 
 import dev.hardaway.ensemble.Ensemble;
+import dev.hardaway.ensemble.client.ClientConductor;
 import dev.hardaway.ensemble.client.midi.MidiEvent;
 import dev.hardaway.ensemble.common.instrument.InstrumentNote;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 public record ClientboundNotePacket(int entityId,
                                     MidiEvent.Status status,
@@ -24,6 +26,10 @@ public record ClientboundNotePacket(int entityId,
         int octave = buf.readVarInt();
         int velocity = status == MidiEvent.Status.ON ? buf.readVarInt() : 0;
         return new ClientboundNotePacket(entityId, status, note, instrument, octave, velocity);
+    }
+
+    public static void handle(ClientboundNotePacket payload, PlayPayloadContext ctx) {
+        ClientConductor.INSTANCE.handleNote(payload, ctx);
     }
 
     @Override
