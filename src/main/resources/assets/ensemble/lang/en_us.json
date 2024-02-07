@@ -1,3 +1,13 @@
 {
+  "key.ensemble.note.c": "Note C",
+  "key.ensemble.note.d": "Note D",
+  "key.ensemble.note.e": "Note E",
+  "key.ensemble.note.f": "Note F",
+  "key.ensemble.note.g": "Note G",
+  "key.ensemble.note.a": "Note A",
+  "key.ensemble.note.b": "Note B",
+  "key.ensemble.sharpen_note": "Sharpen Note",
+  "key.ensemble.transpoe_octave_up": "Transpose Octave Up",
+  "key.ensemble.transpoe_octave_down": "Transpose Octave Down",
   "subtitles.ensemble.instrument.piano.note": "Piano plays"
 }

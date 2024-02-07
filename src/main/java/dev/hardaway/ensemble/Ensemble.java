@@ -1,6 +1,7 @@
 package dev.hardaway.ensemble;
 
 import dev.hardaway.ensemble.client.ClientConductor;
+import dev.hardaway.ensemble.client.key.EnsembleKeyMappings;
 import dev.hardaway.ensemble.common.network.EnsembleNetwork;
 import dev.hardaway.ensemble.common.registry.EnsembleInstruments;
 import dev.hardaway.ensemble.common.registry.EnsembleItems;
@@ -17,10 +18,11 @@ public class Ensemble {
 
     public Ensemble(IEventBus bus) {
         bus.addListener(EnsembleNetwork::register);
+        bus.addListener(EnsembleInstruments::register);
+        bus.addListener(EnsembleKeyMappings::register);
 
         EnsembleItems.REGISTRY.register(bus);
         EnsembleSynthesizers.REGISTRY.register(bus);
-        EnsembleInstruments.register(bus);
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             ClientConductor.INSTANCE.register(bus);

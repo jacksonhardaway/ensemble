@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 import java.util.List;
 import java.util.Map;
@@ -20,17 +21,32 @@ public final class InstrumentDefinition {
     private final boolean canSustain;
     private final List<NoteDictionaryEntry> noteDictionary;
     private final Map<InstrumentNote, NoteDictionaryEntry> noteMap;
+    private final int minOctave;
+    private final int maxOctave;
 
     private InstrumentDefinition(ResourceLocation synthesizer, boolean canSustain, List<NoteDictionaryEntry> noteDictionary) {
         this.synthesizer = synthesizer;
         this.canSustain = canSustain;
         this.noteDictionary = noteDictionary;
 
+        int minOctave = 0;
+        int maxOctave = 0;
+
         ImmutableMap.Builder<InstrumentNote, NoteDictionaryEntry> noteMap = ImmutableMap.builder();
         for (NoteDictionaryEntry entry : noteDictionary) {
+            NoteDictionaryEntry.Octaves octaves = entry.octaves();
+            if (maxOctave < octaves.max()) {
+                maxOctave = octaves.max();
+            }
+            if (minOctave > octaves.min()) {
+                minOctave = octaves.min();
+            }
+
             noteMap.put(entry.note(), entry);
         }
         this.noteMap = noteMap.build();
+        this.minOctave = minOctave;
+        this.maxOctave = maxOctave;
     }
 
     public ResourceLocation getSynthesizer() {
@@ -43,6 +59,18 @@ public final class InstrumentDefinition {
 
     public Map<InstrumentNote, NoteDictionaryEntry> getNoteMap() {
         return noteMap;
+    }
+
+    public int clampOctave(int octave) {
+        return Mth.clamp(octave, this.getMinOctave(), this.getMaxOctave());
+    }
+
+    public int getMinOctave() {
+        return minOctave;
+    }
+
+    public int getMaxOctave() {
+        return maxOctave;
     }
 
     public record NoteDictionaryEntry(InstrumentNote note, Octaves octaves) {
