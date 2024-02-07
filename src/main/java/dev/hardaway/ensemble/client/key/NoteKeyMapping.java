@@ -12,7 +12,7 @@ public class NoteKeyMapping extends KeyMapping {
     private boolean sharpened = false;
 
     public NoteKeyMapping(InstrumentNote note, int key) {
-        super("key." + Ensemble.MOD_ID + "note." + note.getSerializedName(),
+        super("key." + Ensemble.MOD_ID + ".note." + note.getSerializedName(),
                 EnsembleKeyMappings.PLAYING_INSTRUMENT_CONFLICT,
                 InputConstants.Type.KEYSYM,
                 key,

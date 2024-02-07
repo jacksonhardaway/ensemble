@@ -7,7 +7,7 @@
   "key.ensemble.note.a": "Note A",
   "key.ensemble.note.b": "Note B",
   "key.ensemble.sharpen_note": "Sharpen Note",
-  "key.ensemble.transpoe_octave_up": "Transpose Octave Up",
-  "key.ensemble.transpoe_octave_down": "Transpose Octave Down",
+  "key.ensemble.transpose_octave_up": "Transpose Octave Up",
+  "key.ensemble.transpose_octave_down": "Transpose Octave Down",
   "subtitles.ensemble.instrument.piano.note": "Piano plays"
 }
