@@ -1,7 +1,9 @@
 package dev.hardaway.ensemble.client.key;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import dev.hardaway.ensemble.client.ClientConductor;
+import dev.hardaway.ensemble.common.attachment.InstrumentHolderAttachment;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.common.util.Lazy;
 import dev.hardaway.ensemble.Ensemble;
 import dev.hardaway.ensemble.common.instrument.InstrumentNote;
@@ -19,7 +21,12 @@ public class EnsembleKeyMappings {
     public static final IKeyConflictContext PLAYING_INSTRUMENT_CONFLICT = new IKeyConflictContext() {
         @Override
         public boolean isActive() {
-            return ClientConductor.INSTANCE.getRecordingInstrument() != null;
+            Player player = Minecraft.getInstance().player;
+            if (player == null) {
+                return false;
+            }
+
+            return InstrumentHolderAttachment.hasInstrument(player);
         }
 
         @Override

@@ -3,10 +3,10 @@ package dev.hardaway.ensemble;
 import dev.hardaway.ensemble.client.ClientConductor;
 import dev.hardaway.ensemble.client.key.EnsembleKeyMappings;
 import dev.hardaway.ensemble.common.network.EnsembleNetwork;
+import dev.hardaway.ensemble.common.registry.EnsembleAttachments;
 import dev.hardaway.ensemble.common.registry.EnsembleInstruments;
 import dev.hardaway.ensemble.common.registry.EnsembleItems;
 import dev.hardaway.ensemble.common.registry.EnsembleSynthesizers;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -23,8 +23,9 @@ public class Ensemble {
 
         EnsembleItems.REGISTRY.register(bus);
         EnsembleSynthesizers.REGISTRY.register(bus);
+        EnsembleAttachments.REGISTRY.register(bus);
 
-        if (FMLEnvironment.dist == Dist.CLIENT) {
+        if (FMLEnvironment.dist.isClient()) {
             ClientConductor.INSTANCE.register(bus);
         }
     }
