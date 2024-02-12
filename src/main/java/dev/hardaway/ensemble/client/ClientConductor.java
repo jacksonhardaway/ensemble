@@ -7,7 +7,7 @@ import dev.hardaway.ensemble.client.instrument.synthesizer.InstrumentSynthesizer
 import dev.hardaway.ensemble.client.instrument.synthesizer.InstrumentSynthesizerManager;
 import dev.hardaway.ensemble.client.key.EnsembleKeyMappings;
 import dev.hardaway.ensemble.client.key.NoteKeyMapping;
-import dev.hardaway.ensemble.client.midi.MidiEvent;
+import dev.hardaway.ensemble.client.midi.MidiInputEvent;
 import dev.hardaway.ensemble.client.midi.MidiInterpreter;
 import dev.hardaway.ensemble.common.instrument.InstrumentDefinition;
 import dev.hardaway.ensemble.common.instrument.InstrumentNote;
@@ -26,7 +26,6 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.level.NoteBlockEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import org.jetbrains.annotations.ApiStatus;
@@ -53,7 +52,7 @@ public final class ClientConductor {
         this.synthesizerManager = new InstrumentSynthesizerManager();
     }
 
-    private static void sendNote(MidiEvent.Status status, InstrumentDefinition instrument, InstrumentNote note, int octave, int velocity) {
+    private static void sendNote(MidiInputEvent.Status status, InstrumentDefinition instrument, InstrumentNote note, int octave, int velocity) {
         ClientPacketListener listener = Minecraft.getInstance().getConnection();
         if (listener != null) {
             Registry<InstrumentDefinition> registry = listener.registryAccess().registryOrThrow(EnsembleInstruments.INSTRUMENT_DEFINITION_REGISTRY);
@@ -69,14 +68,14 @@ public final class ClientConductor {
 
     public void setInstrument(@Nullable InstrumentDefinition instrument) {
         CLIENT_NOTES.forEach((pair) -> {
-            sendNote(MidiEvent.Status.OFF, this.instrument, pair.getFirst(), pair.getSecond(), 0);
+            sendNote(MidiInputEvent.Status.OFF, this.instrument, pair.getFirst(), pair.getSecond(), 0);
             this.stopNote(pair.getFirst(), pair.getSecond());
         });
         CLIENT_NOTES.clear();
 
         this.instrument = instrument;
         if (this.instrument != null) {
-            instrument.clampOctave(this.octave);
+            this.octave = instrument.clampOctave((instrument.getMaxOctave() - instrument.getMinOctave() + 1) / 2);
         }
     }
 
@@ -148,7 +147,7 @@ public final class ClientConductor {
                         note = note.sharpen();
                     }
 
-                    sendNote(MidiEvent.Status.ON, this.instrument, note, this.octave, 127);
+                    sendNote(MidiInputEvent.Status.ON, this.instrument, note, this.octave, 127);
                     this.playNote(player, this.instrument, note, this.octave, 127, true);
                     return;
                 }
@@ -156,7 +155,7 @@ public final class ClientConductor {
                     final int octave = keyMapping.getOctave();
                     final InstrumentNote releaseNote = keyMapping.isSharpened() ? note.sharpen() : note;
 
-                    sendNote(MidiEvent.Status.OFF, this.instrument, releaseNote, octave, 0);
+                    sendNote(MidiInputEvent.Status.OFF, this.instrument, releaseNote, octave, 0);
                     this.stopNote(releaseNote, octave);
                     return;
                 }
@@ -164,7 +163,7 @@ public final class ClientConductor {
         }
     }
 
-    private void receiveMidi(MidiEvent event) {
+    private void receiveMidi(MidiInputEvent event) {
         Player player = Minecraft.getInstance().player;
         if (player == null) {
             return;
@@ -200,11 +199,11 @@ public final class ClientConductor {
             return;
         }
 
-        MidiEvent.Status status = packet.status();
+        MidiInputEvent.Status status = packet.status();
         InstrumentNote note = packet.note();
         int octave = packet.octave();
 
-        if (status == MidiEvent.Status.ON) {
+        if (status == MidiInputEvent.Status.ON) {
             this.playNote(entity, instrument, note, octave, packet.velocity(), false);
         } else {
             this.stopNote(note, octave);

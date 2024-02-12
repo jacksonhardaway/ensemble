@@ -74,7 +74,7 @@ public final class MidiInterpreter {
             int velocity = msg.getData2();
 
             LOGGER.debug("received midi event: {} oct {} vel {}", note.getSerializedName(), octave, velocity);
-            Minecraft.getInstance().execute(() -> NeoForge.EVENT_BUS.post(new MidiEvent(command == ShortMessage.NOTE_OFF || velocity <= 0 ? MidiEvent.Status.OFF : MidiEvent.Status.ON, note, octave, velocity)));
+            Minecraft.getInstance().execute(() -> NeoForge.EVENT_BUS.post(new MidiInputEvent(command == ShortMessage.NOTE_OFF || velocity <= 0 ? MidiInputEvent.Status.OFF : MidiInputEvent.Status.ON, note, octave, velocity)));
         }
 
         @Override
