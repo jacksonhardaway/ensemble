@@ -1,5 +1,5 @@
 {
-  "synthesizer": "ensemble:piano",
+  "synthesizer": "ensemble:grand_piano",
   "can_sustain": true,
   "note_dictionary": [
     {
@@ -27,7 +27,7 @@
       "note": "c",
       "octaves": {
         "min": 1,
-        "max": 8
+        "max": 7
       }
     },
     {

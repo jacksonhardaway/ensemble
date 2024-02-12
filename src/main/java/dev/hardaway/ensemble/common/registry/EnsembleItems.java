@@ -15,6 +15,7 @@ public class EnsembleItems {
     public static final DeferredRegister.Items REGISTRY = DeferredRegister.createItems(Ensemble.MOD_ID);
 
     public static final DeferredItem<InstrumentItem> TEST_INSTRUMENT = registerInstrument("test_instrument", "piano");
+    public static final DeferredItem<InstrumentItem> SAXOPHONE = registerInstrument("saxophone", "saxophone");
 
     private static DeferredItem<InstrumentItem> registerInstrument(String id, String instrument) {
         return REGISTRY.register(id, () -> new InstrumentItem(ResourceKey.create(EnsembleInstruments.INSTRUMENT_DEFINITION_REGISTRY, new ResourceLocation(Ensemble.MOD_ID, instrument)), new Item.Properties()));

@@ -1,0 +1,116 @@
+{
+  "type": "ensemble:sound_event",
+  "sound_events": {
+    "a": [
+      "ensemble:instrument.grand_piano.note.a.0",
+      "ensemble:instrument.grand_piano.note.a.1",
+      "ensemble:instrument.grand_piano.note.a.2",
+      "ensemble:instrument.grand_piano.note.a.3",
+      "ensemble:instrument.grand_piano.note.a.4",
+      "ensemble:instrument.grand_piano.note.a.5",
+      "ensemble:instrument.grand_piano.note.a.6",
+      "ensemble:instrument.grand_piano.note.a.7"
+    ],
+    "a_sharp": [
+      "ensemble:instrument.grand_piano.note.a_sharp.0",
+      "ensemble:instrument.grand_piano.note.a_sharp.1",
+      "ensemble:instrument.grand_piano.note.a_sharp.2",
+      "ensemble:instrument.grand_piano.note.a_sharp.3",
+      "ensemble:instrument.grand_piano.note.a_sharp.4",
+      "ensemble:instrument.grand_piano.note.a_sharp.5",
+      "ensemble:instrument.grand_piano.note.a_sharp.6",
+      "ensemble:instrument.grand_piano.note.a_sharp.7"
+    ],
+    "b": [
+      "ensemble:instrument.grand_piano.note.b.0",
+      "ensemble:instrument.grand_piano.note.b.1",
+      "ensemble:instrument.grand_piano.note.b.2",
+      "ensemble:instrument.grand_piano.note.b.3",
+      "ensemble:instrument.grand_piano.note.b.4",
+      "ensemble:instrument.grand_piano.note.b.5",
+      "ensemble:instrument.grand_piano.note.b.6",
+      "ensemble:instrument.grand_piano.note.b.7"
+    ],
+    "c": [
+      "ensemble:instrument.grand_piano.note.c.1",
+      "ensemble:instrument.grand_piano.note.c.2",
+      "ensemble:instrument.grand_piano.note.c.3",
+      "ensemble:instrument.grand_piano.note.c.4",
+      "ensemble:instrument.grand_piano.note.c.5",
+      "ensemble:instrument.grand_piano.note.c.6",
+      "ensemble:instrument.grand_piano.note.c.7"
+    ],
+    "c_sharp": [
+      "ensemble:instrument.grand_piano.note.c_sharp.1",
+      "ensemble:instrument.grand_piano.note.c_sharp.2",
+      "ensemble:instrument.grand_piano.note.c_sharp.3",
+      "ensemble:instrument.grand_piano.note.c_sharp.4",
+      "ensemble:instrument.grand_piano.note.c_sharp.5",
+      "ensemble:instrument.grand_piano.note.c_sharp.6",
+      "ensemble:instrument.grand_piano.note.c_sharp.7"
+    ],
+    "d": [
+      "ensemble:instrument.grand_piano.note.d.1",
+      "ensemble:instrument.grand_piano.note.d.2",
+      "ensemble:instrument.grand_piano.note.d.3",
+      "ensemble:instrument.grand_piano.note.d.4",
+      "ensemble:instrument.grand_piano.note.d.5",
+      "ensemble:instrument.grand_piano.note.d.6",
+      "ensemble:instrument.grand_piano.note.d.7"
+    ],
+    "d_sharp": [
+      "ensemble:instrument.grand_piano.note.d_sharp.1",
+      "ensemble:instrument.grand_piano.note.d_sharp.2",
+      "ensemble:instrument.grand_piano.note.d_sharp.3",
+      "ensemble:instrument.grand_piano.note.d_sharp.4",
+      "ensemble:instrument.grand_piano.note.d_sharp.5",
+      "ensemble:instrument.grand_piano.note.d_sharp.6",
+      "ensemble:instrument.grand_piano.note.d_sharp.7"
+    ],
+    "e": [
+      "ensemble:instrument.grand_piano.note.e.1",
+      "ensemble:instrument.grand_piano.note.e.2",
+      "ensemble:instrument.grand_piano.note.e.3",
+      "ensemble:instrument.grand_piano.note.e.4",
+      "ensemble:instrument.grand_piano.note.e.5",
+      "ensemble:instrument.grand_piano.note.e.6",
+      "ensemble:instrument.grand_piano.note.e.7"
+    ],
+    "f": [
+      "ensemble:instrument.grand_piano.note.f.1",
+      "ensemble:instrument.grand_piano.note.f.2",
+      "ensemble:instrument.grand_piano.note.f.3",
+      "ensemble:instrument.grand_piano.note.f.4",
+      "ensemble:instrument.grand_piano.note.f.5",
+      "ensemble:instrument.grand_piano.note.f.6",
+      "ensemble:instrument.grand_piano.note.f.7"
+    ],
+    "f_sharp": [
+      "ensemble:instrument.grand_piano.note.f_sharp.1",
+      "ensemble:instrument.grand_piano.note.f_sharp.2",
+      "ensemble:instrument.grand_piano.note.f_sharp.3",
+      "ensemble:instrument.grand_piano.note.f_sharp.4",
+      "ensemble:instrument.grand_piano.note.f_sharp.5",
+      "ensemble:instrument.grand_piano.note.f_sharp.6",
+      "ensemble:instrument.grand_piano.note.f_sharp.7"
+    ],
+    "g": [
+      "ensemble:instrument.grand_piano.note.g.1",
+      "ensemble:instrument.grand_piano.note.g.2",
+      "ensemble:instrument.grand_piano.note.g.3",
+      "ensemble:instrument.grand_piano.note.g.4",
+      "ensemble:instrument.grand_piano.note.g.5",
+      "ensemble:instrument.grand_piano.note.g.6",
+      "ensemble:instrument.grand_piano.note.g.7"
+    ],
+    "g_sharp": [
+      "ensemble:instrument.grand_piano.note.g_sharp.1",
+      "ensemble:instrument.grand_piano.note.g_sharp.2",
+      "ensemble:instrument.grand_piano.note.g_sharp.3",
+      "ensemble:instrument.grand_piano.note.g_sharp.4",
+      "ensemble:instrument.grand_piano.note.g_sharp.5",
+      "ensemble:instrument.grand_piano.note.g_sharp.6",
+      "ensemble:instrument.grand_piano.note.g_sharp.7"
+    ]
+  }
+}

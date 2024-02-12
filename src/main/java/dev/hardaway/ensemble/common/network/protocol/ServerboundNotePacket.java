@@ -21,6 +21,7 @@ public record ServerboundNotePacket(MidiInputEvent.Status status,
                                     int velocity) implements CustomPacketPayload {
 
     public static final ResourceLocation ID = new ResourceLocation(Ensemble.MOD_ID, "serverbound_note");
+    private static final Component INVALID_INSTRUMENT = Component.translatable("disconnect.ensemble.invalid_instrument");
 
     public static ServerboundNotePacket read(FriendlyByteBuf buf) {
         MidiInputEvent.Status status = buf.readEnum(MidiInputEvent.Status.class);
@@ -39,7 +40,7 @@ public record ServerboundNotePacket(MidiInputEvent.Status status,
         ServerPlayer sender = (ServerPlayer) ctx.player().get();
         Registry<InstrumentDefinition> registry = sender.level().registryAccess().registryOrThrow(EnsembleInstruments.INSTRUMENT_DEFINITION_REGISTRY);
         if (registry.byId(payload.instrument()) == null) {
-            ctx.packetHandler().disconnect(Component.literal("Invalid Instrument")); // TODO translate
+            ctx.packetHandler().disconnect(ServerboundNotePacket.INVALID_INSTRUMENT);
             return;
         }
 
